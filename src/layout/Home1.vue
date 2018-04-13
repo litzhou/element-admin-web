@@ -4,6 +4,9 @@
        <v-icon name="icon-xuanxiang" class="menu" @click.native="handlerIsCollapse"></v-icon>
           <div id="t-title">甘肃米粒电子商务有限公司</div>
           <div class="logout">
+            <el-tooltip class="item" effect="dark" :content="userName" placement="top-end">
+              <h2 style="float:left;padding-right:10px;">{{ userName }}</h2>
+            </el-tooltip>
             <el-tooltip class="item" effect="dark" :content="screenfull? '还原': '全屏'" placement="top-end">
               <v-icon :name="screenfull ? 'icon-smallscreen' : 'icon-send'" @click.native="toggleScreen"></v-icon>
             </el-tooltip>
@@ -53,6 +56,9 @@ export default {
     },
     active() {
       return this.$route.path
+    },
+    userName(){
+      return this.$store.state.sys.user.userName
     }
   },
   methods: {

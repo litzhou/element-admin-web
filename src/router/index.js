@@ -92,6 +92,12 @@ export const asyncRouterMap = [
         name: 'CRUD',
         component: lazyLoading('views/auth/CRUD'),
         meta: { auth: "crud", title: '增删改查'}
+      },
+      {
+        path: '/user',
+        name: 'User',
+        component: lazyLoading('views/sys/User'),
+        meta: { title: '用户管理'}
       }
     ]
   },
@@ -110,8 +116,8 @@ router.beforeEach((to, from, next) => {
   // 没有角色并且去的不是登录页 我们拉取角色 如果拉取不到角色 说明没有登录
   if (!store.state.sys.menu && to.path !== '/login') {
     api.GET_USER_INFO().then(res => {
-      console.log(res)
       if (res.success) {
+        store.commit('SET_USER', res.data.user)
         store.commit('FILTER_MENU', res.data.menu)
         router.addRoutes(store.state.sys.menu)
         next(...to)

@@ -7,7 +7,8 @@ const state = {
   layout: '固定布局',
   isCollapse: false, // 菜单状态是否收起
   menu: null, // 菜单
-  lang: 'zh' // 语言
+  lang: 'zh', // 语言
+  user: null
 }
 
 function hasMenu(menu, route) {
@@ -67,6 +68,11 @@ const mutations = {
   [types.SET_LANG](state, payload) {
     state.lang = payload
     window.localStorage.setItem('lang', payload)
+  },
+
+  // 设置登录用户
+  [types.SET_USER](state, payload) {
+    state.user = payload
   }
 }
 

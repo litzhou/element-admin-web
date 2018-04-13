@@ -93,6 +93,7 @@ export default {
           */
          // this.$store.commit('FILTER_ROLE', role)
           this.$store.commit('FILTER_MENU', userMenu)
+          this.$store.commit('SET_USER', login.data.user)
           // 登录成功 动态添加路由
           this.$router.addRoutes(this.menu)
           this.$router.replace('/index')

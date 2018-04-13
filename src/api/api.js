@@ -25,39 +25,40 @@ const GET_USER_INFO = params => {
 /**
  * 获取用户列表
  */
-const GET_USER_LIST = params => {
-  return fetch({url: `/api/user`, method: 'get', params: params})
+const USER_LIST = params => {
+  return fetch({url: `/user/list`, method: 'get', params: params})
 }
 
 /**
  * 删除用户列表
  */
-const DELETE_USER_LIST = params => {
-  return fetch({url: `/api/user`, method: 'delete', data: params})
+const USER_DELETE = params => {
+  return fetch({url: `/user/delete`, method: 'delete', data: params})
 }
 
 /**
  * 新增用户
  */
-const ADD_USER = params => {
-  return fetch({url: `/api/user`, method: 'post', data: params})
+const USER_ADD = params => {
+  return fetch({url: `/user/add`, method: 'post', data: params})
 }
 
 /**
  * 修改用户
  */
-const EDIT_USER = params => {
-  return fetch({url: `/api/user`, method: 'put', data: params})
+const USER_UPDATE = params => {
+  return fetch({url: `/user/update`, method: 'put', data: params})
 }
 
 const apiList = {
   LOGIN,
   GET_MENU,
   GET_USER_INFO,
-  GET_USER_LIST,
-  DELETE_USER_LIST,
-  ADD_USER,
-  EDIT_USER
+  //用户管理
+  USER_LIST,
+  USER_ADD,
+  USER_UPDATE,
+  USER_DELETE
 }
 
 export default apiList
