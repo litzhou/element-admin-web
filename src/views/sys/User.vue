@@ -16,13 +16,17 @@
             <el-button size="mini" type="text">取消</el-button>
             <el-button type="primary" size="mini" @click="handleDelete">确定</el-button>
           </div>
-            <el-button type="danger" slot="reference" >批量删除</el-button>
+            <el-button type="danger" slot="reference">批量删除</el-button>
         </el-popover>
+        <el-input placeholder="请输入内容"  suffix-icon="el-icon-search" clearable style="width:200px;">
+        </el-input>
       </div>
       <el-table :data="data"  @selection-change="handleSelectionChange" style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column fixed prop="userName" label="用户名">
+         <el-table-column prop="userImg" label="头像">
+        </el-table-column>
+        <el-table-column  prop="userName" label="用户名">
         </el-table-column>
         <el-table-column prop="userState" label="状态">
           <div slot-scope="scope">
@@ -32,8 +36,6 @@
         <el-table-column prop="createTime" label="创建时间">
         </el-table-column>
         <el-table-column prop="userDesc" label="描述">
-        </el-table-column>
-        <el-table-column prop="userImg" label="头像">
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="180">
           <div slot-scope="scope">

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '@/router'
-import Cookies from 'js-cookie'
 import NProgress from 'nprogress'
+import { Notification } from 'element-ui'
 import 'nprogress/nprogress.css'
 // import isJSON from 'is-json'
 // var isProduction = process.env.NODE_ENV === 'production'
@@ -64,14 +64,20 @@ export default function fetch(options) {
     instance(options)
       .then(res => {
         NProgress.done()
-        if (res.code === 1000) {
-          Cookies.remove('__userInfo')
+        if (res.code === 302) {
           router.replace({
             name: 'Login'
           })
         } else {
           if (res.status === 200) {
-            resolve(res.data)
+            if(res.data.success){
+              resolve(res.data)
+            }else{
+              Notification.error({
+                title:'异常',
+                message: res.data.message ? `来自响应结果的错误:${res.data.message}` : 'Unknown Error' 
+              })
+            }
           }
         }
         return false
@@ -80,6 +86,10 @@ export default function fetch(options) {
         NProgress.done()
         console.error(`来自响应结果的错误:${error}`)
         reject(error)
+        Notification.error({
+          title:'异常',
+          message:`来自响应结果的错误:${error}`
+        })
       })
   })
 }
