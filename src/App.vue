@@ -33,4 +33,8 @@ export default {
   min-height: 100vh;
   position: relative;
 }
+.pagination{
+  float: right;
+  padding: 10px;
+}
 </style>

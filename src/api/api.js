@@ -46,8 +46,8 @@ const USER_ADD = params => {
 /**
  * 修改用户
  */
-const USER_UPDATE = params => {
-  return fetch({url: `/user/update`, method: 'put', data: params})
+const USER_EDIT = params => {
+  return fetch({url: `/user/edit`, method: 'put', data: params})
 }
 
 const apiList = {
@@ -57,8 +57,8 @@ const apiList = {
   //用户管理
   USER_LIST,
   USER_ADD,
-  USER_UPDATE,
-  USER_DELETE
+  USER_DELETE,
+  USER_EDIT
 }
 
 export default apiList

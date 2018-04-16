@@ -70,12 +70,16 @@ export default function fetch(options) {
           })
         } else {
           if (res.status === 200) {
+            resolve(res.data)
             if(res.data.success){
-              resolve(res.data)
+              Notification.success({
+                title:'成功',
+                message: res.data.message ? `服务器响应结果:${res.data.message}` : 'OK' 
+              })
             }else{
               Notification.error({
                 title:'异常',
-                message: res.data.message ? `来自响应结果的错误:${res.data.message}` : 'Unknown Error' 
+                message: res.data.message ? `服务器响应的错误结果:${res.data.message}` : 'Unknown Error' 
               })
             }
           }
@@ -84,11 +88,11 @@ export default function fetch(options) {
       })
       .catch(error => {
         NProgress.done()
-        console.error(`来自响应结果的错误:${error}`)
+        console.error(`服务器响应的错误结果:${error}`)
         reject(error)
         Notification.error({
           title:'异常',
-          message:`来自响应结果的错误:${error}`
+          message:`服务器响应的错误结果:${error}`
         })
       })
   })

@@ -1,39 +1,53 @@
 <template>
   <div>
+    <!-- 导航栏 -->
     <div style="padding: 10px;">
-          <el-breadcrumb separator="/">
-          <el-breadcrumb-item>系统管理</el-breadcrumb-item>
-          <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-        </el-breadcrumb>
-        </div>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <el-card>
+      <!-- 菜单年 -->
       <div slot="header" class="clearfix">
         <el-button type="primary" @click="handleAdd">新增</el-button>
-        <el-button type="danger" @click="handleDelete" v-show="multipleSelection.length>0">批量删除</el-button>
-        <el-popover trigger="click" placement="top" width="160" style="display:inline-block" v-show="multipleSelection.length>0">
-          <p>确定删除吗？</p>
-          <div style="text-align: right; margin: 0">
-            <el-button size="mini" type="text">取消</el-button>
-            <el-button type="primary" size="mini" @click="handleDelete">确定</el-button>
+       <!--
+           <el-button type="danger" @click="handleDelete" v-show="multipleSelection.length>0">批量删除</el-button>
+       -->
+        <el-popover
+          placement="top"
+          ref="popover5"
+          v-model="batchDelVisible">
+          <p>确定批量删除{{multipleSelection.length}}条记录？</p>
+          <div style="text-align: right; margin: 5px;">
+            <el-button size="mini" type="text" @click="batchDelVisible = false">取消</el-button>
+            <el-button type="primary" size="mini" @click="handleBatchDelete">确定</el-button>
           </div>
-            <el-button type="danger" slot="reference">批量删除</el-button>
         </el-popover>
-        <el-input placeholder="请输入内容"  suffix-icon="el-icon-search" clearable style="width:200px;">
-        </el-input>
+        <el-button v-popover:popover5 type="danger" @click="batchDelVisible=true" v-show="multipleSelection.length>0">批量删除</el-button>
+        <el-input placeholder="输入关键词按回车" v-model="page.search"  suffix-icon="el-icon-search" clearable style="width:200px;"  @keyup.enter.native="handleSearch"></el-input>
       </div>
+      <!-- 表格 -->
       <el-table :data="data"  @selection-change="handleSelectionChange" style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
-         <el-table-column prop="userImg" label="头像">
+        <el-table-column prop="userImg" label="头像" width="60">
+          <template slot-scope="scope">
+            <img :src="scope.row.userImg" style="width:30px;border-radius:20px">
+          </template>
         </el-table-column>
-        <el-table-column  prop="userName" label="用户名">
+        <el-table-column sortable  prop="userName" label="用户名">
         </el-table-column>
-        <el-table-column prop="userState" label="状态">
+        <el-table-column sortable prop="userState" label="状态">
           <div slot-scope="scope">
             <span>{{ scope.row.userState == 1 ? '启用' : '禁用' }}</span>
           </div>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间">
+        <el-table-column sortable label="创建时间">
+           <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            <span>{{ scope.row.createTime }}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="userDesc" label="描述">
         </el-table-column>
@@ -45,36 +59,43 @@
               <p>确定删除{{scope.row.name}}吗？</p>
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-                <el-button type="primary" size="mini" @click="hanleDeleteSingle(scope.row)">确定</el-button>
+                <el-button type="primary" size="mini" @click="hanleSingleDelete(scope.row)">确定</el-button>
               </div>
                 <el-button type="text" slot="reference" @click="scope.row.visible = true" size="small" style="color:#f60">删除</el-button>
             </el-popover>
           </div>
         </el-table-column>
       </el-table>
+      <!-- 分页条 -->
+      <div class="pagination">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="page.current"
+          :page-sizes="[10, 20, 30, 50, 100,200]"
+          :page-size="page.size"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="page.total">
+        </el-pagination>
+      </div>
     </el-card>
+    <!-- 表单 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" :append-to-body="true">
       <el-form :model="form" v-loading="loading">
-        <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input v-model="form.userName" auto-complete="off" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="年龄" :label-width="formLabelWidth">
-          <el-input v-model="form.age"></el-input>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input v-model="form.password" type="password" placeholder="请输入用密码"></el-input>
         </el-form-item>
-        <el-form-item label="性别" :label-width="formLabelWidth">
-          <el-select v-model="form.isMale" placeholder="请选择性别">
-            <el-option label="男" :value="true"></el-option>
-            <el-option label="女" :value="false"></el-option>
+        <el-form-item label="状态" :label-width="formLabelWidth">
+          <el-select v-model="form.userState" placeholder="请选择状态">
+            <el-option label="启用" :value="1"></el-option>
+            <el-option label="禁用" :value="-1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="生日" :label-width="formLabelWidth">
-          <div class="block">
-            <el-date-picker v-model="form.birthday" type="date" placeholder="选择日期">
-            </el-date-picker>
-          </div>
-        </el-form-item>
-        <el-form-item label="地址" :label-width="formLabelWidth">
-          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.city">
+        <el-form-item label="描述" :label-width="formLabelWidth">
+          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.userDesc">
           </el-input>
         </el-form-item>
       </el-form>
@@ -87,6 +108,8 @@
 </template>
 
 <script>
+import {objectFly} from '@/util/index'
+import { fail } from 'assert';
 export default {
   data() {
     return {
@@ -95,15 +118,22 @@ export default {
       multipleSelection: [],
       dialogFormVisible: false,
       title: '新增',
+      batchDelVisible:false,
       form: {
-        name: '乔霞',
-        age: 27,
-        birthday: '1974-09-15',
-        city: '江西省 萍乡市',
-        isMale: false,
-        visible: false
+        id:'',
+        userName: '',
+        password: '',
+        userState: 1,
+        userDesc: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      //分页查询参数
+      page: {
+        search: '',
+        size: 10,
+        total: 0,
+        current: 1
+      }
     }
   },
   created() {
@@ -111,11 +141,12 @@ export default {
   },
   methods: {
     async getData() {
-      let res = await this.$api.USER_LIST()
-      this.data = res.data
-      console.log(res)
+      let res = await this.$api.USER_LIST(this.page)
+      this.data = res.data.records
+      Object.assign(this.page,res.data)
     },
-    async handleDelete() {
+    async handleBatchDelete() {
+      this.batchDelVisible = false
       let ids = []
       for (let i = 0; i < this.multipleSelection.length; i++) {
         ids.push(this.multipleSelection[i].id)
@@ -125,7 +156,7 @@ export default {
       })
       this.getData()
     },
-    async hanleDeleteSingle(row) {
+    async hanleSingleDelete(row) {
       let res = await this.$api.USER_DELETE({
         ids: [row.id]
       })
@@ -133,31 +164,48 @@ export default {
     },
     handleAdd() {
       this.title = '新增'
+      this.form = {userState:1}
       this.dialogFormVisible = true
     },
     async postUser() {
       this.loading = true
+      let res = ''
       if (this.title === '新增') {
-        let res = await this.$api.ADD_USER(this.form)
-        this.dialogFormVisible = false
-        this.data = res.data
+        res = await this.$api.USER_ADD(this.form)
       } else {
-        let res = await this.$api.EDIT_USER(this.form)
+        res = await this.$api.USER_EDIT(this.form)
+      }
+      if(res.success){
         this.dialogFormVisible = false
-        this.data = res.data
+        this.getData()
       }
       this.loading = false
     },
     handleEdit(row) {
       this.title = '编辑'
       this.dialogFormVisible = true
-      this.form = row
+      objectFly(this.form,row)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
     handleClick(row) {
       console.log(row)
+    },
+    //搜索
+    handleSearch(){
+      this.page.current = 1
+      this.getData()
+    },
+    //改变页大小
+    handleSizeChange(size){
+      this.page.size = size
+      this.getData()
+    },
+    //改变当前页
+    handleCurrentChange(current){
+      this.page.current = current
+      this.getData()
     }
   }
 }
