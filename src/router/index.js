@@ -68,36 +68,56 @@ export const asyncRouterMap = [
         name: 'Lang',
         component: lazyLoading('views/i18n/Lang'),
         meta: { auth: "lang", title: '语言国际化'}
-      },
-      {
+      }, {
         path: '/echarts',
         name: 'Echarts',
         component: lazyLoading('views/echarts/Index'),
         meta: { auth: "echarts", title: '百度图表'}
-      },
-      {
+      }, {
         path: '/editor',
         name: 'Editor',
         component: lazyLoading('views/editor/Editor'),
         meta: { auth: "editor", title: '富文本编辑器'}
-      },
-      {
+      },{
         path: '/markdown',
         name: 'Markdown',
         component: lazyLoading('views/editor/Markdown'),
         meta: {auth: "markdown", title: 'Markdown编辑器'}
-      },
-      {
+      }, {
         path: '/crud',
         name: 'CRUD',
         component: lazyLoading('views/auth/CRUD'),
         meta: { auth: "crud", title: '增删改查'}
-      },
-      {
+      }, {
         path: '/user',
         name: 'User',
         component: lazyLoading('views/sys/User'),
         meta: { title: '用户管理'}
+      }, {
+        path: '/role',
+        name: 'Role',
+        component: lazyLoading('views/sys/Role'),
+        meta: { title: '角色管理'}
+      }, {
+        path: '/menu',
+        name: 'Menu',
+        component: lazyLoading('views/sys/Menu'),
+        meta: { title: '菜单管理'}
+      },{
+        path: '/auth',
+        name: 'Auth',
+        component: lazyLoading('views/sys/Auth'),
+        meta: { title: '权限管理'}
+      },{
+        path: '/dept',
+        name: 'Dept',
+        component: lazyLoading('views/sys/Dept'),
+        meta: { title: '部门管理'}
+      },{
+        path: '/log',
+        name: 'Log',
+        component: lazyLoading('views/sys/Log'),
+        meta: { title: '日志管理'}
       }
     ]
   },

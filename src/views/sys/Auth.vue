@@ -2,21 +2,23 @@
   <div>
     <el-row :gutter="10">
       <el-col :xs="6" :lg="6">
-        <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+          <el-menu>
+            <el-menu-item v-for="item in roleList" index="itmm.id">{{ item.roleName }}</el-menu-item>
+          </el-menu>
       </el-col>
       <el-col :xs="18" :lg="18">
         <el-card class="no-shadow">
-
+          <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
         </el-card>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
-import axios from 'axios'
 export default {
   data() {
     return {
+      roleList: [{roleName:'超级管理员'},{roleName:'普通管理员'}],
       data: [{
         label: '一级 1',
         children: [{
@@ -62,17 +64,14 @@ export default {
     handleNodeClick(data) {
       console.log(data)
     },
-    mockDemo() {
-      axios.get('/api/user').then(res => {
-        console.log(res)
-      })
-      axios.post('/api/login', { username: 'admin', password: '123' }).then(res => {
-        console.log(res)
-      })
+    async getAllRole(){
+      let res = await this.$api.ROLE_ALL_LIST()
+      this.roleList = res.data
     }
   },
   created() {
     //this.mockDemo()
+    this.getAllRole()
   }
 }
 </script>
