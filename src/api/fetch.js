@@ -72,9 +72,11 @@ export default function fetch(options) {
           if (res.status === 200) {
             resolve(res.data)
             if(res.data.success){
+              let msg = res.data.message ? `服务器响应结果:${res.data.message}` : 'OK' ;
               Notification.success({
                 title:'成功',
-                message: res.data.message ? `服务器响应结果:${res.data.message}` : 'OK' 
+                dangerouslyUseHTMLString:true,
+                message: msg + '<br/>' + baseURL + options.url
               })
             }else{
               Notification.error({
