@@ -4,16 +4,13 @@
     <div style="padding: 10px;">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>系统管理</el-breadcrumb-item>
-        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+        <el-breadcrumb-item>部门管理</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-card>
-      <!-- 菜单年 -->
+      <!-- 菜单栏 -->
       <div slot="header" class="clearfix">
         <el-button type="primary" @click="handleAdd">新增</el-button>
-       <!--
-           <el-button type="danger" @click="handleDelete" v-show="multipleSelection.length>0">批量删除</el-button>
-       -->
         <el-popover
           placement="top"
           ref="popover5"
@@ -28,28 +25,12 @@
         <el-input placeholder="输入关键词按回车" v-model="page.search"  suffix-icon="el-icon-search" clearable style="width:200px;"  @keyup.enter.native="handleSearch"></el-input>
       </div>
       <!-- 表格 -->
-      <el-table :data="data" stripe  @selection-change="handleSelectionChange" style="width: 100%">
+      <el-table :data="data" border stripe  @selection-change="handleSelectionChange" style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column prop="userImg" label="头像" width="60">
-          <template slot-scope="scope">
-            <img :src="scope.row.userImg" style="width:30px;border-radius:20px">
-          </template>
+        <el-table-column sortable  prop="deptName" label="部门名称">
         </el-table-column>
-        <el-table-column sortable  prop="userName" label="用户名">
-        </el-table-column>
-        <el-table-column sortable prop="userState" label="状态">
-          <div slot-scope="scope">
-            <span>{{ scope.row.userState == 1 ? '启用' : '禁用' }}</span>
-          </div>
-        </el-table-column>
-        <el-table-column sortable label="创建时间">
-           <template slot-scope="scope">
-            <i class="el-icon-time"></i>
-            <span>{{ scope.row.createTime }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="userDesc" label="描述">
+        <el-table-column prop="deptDesc" label="部门描述">
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="180">
           <div slot-scope="scope">
@@ -81,20 +62,11 @@
     <!-- 表单 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" :append-to-body="true">
       <el-form :model="form" v-loading="loading">
-        <el-form-item label="用户名" :label-width="formLabelWidth">
-          <el-input v-model="form.userName" auto-complete="off" placeholder="请输入用户名"></el-input>
+        <el-form-item label="部门名称" :label-width="formLabelWidth">
+          <el-input v-model="form.deptName" auto-complete="off" placeholder="请输入角色名"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
-          <el-input v-model="form.password" type="password" placeholder="请输入用密码"></el-input>
-        </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
-          <el-select v-model="form.userState" placeholder="请选择状态">
-            <el-option label="启用" :value="1"></el-option>
-            <el-option label="禁用" :value="-1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="描述" :label-width="formLabelWidth">
-          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.userDesc">
+        <el-form-item label="部门描述" :label-width="formLabelWidth">
+          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.deptDesc">
           </el-input>
         </el-form-item>
       </el-form>
@@ -107,8 +79,6 @@
 </template>
 
 <script>
-import {objectFly} from '@/util/index'
-import { fail } from 'assert';
 export default {
   data() {
     return {
@@ -120,10 +90,8 @@ export default {
       batchDelVisible:false,
       form: {
         id:'',
-        userName: '',
-        password: '',
-        userState: 1,
-        userDesc: ''
+        deptName: '',
+        deptDesc: ''
       },
       formLabelWidth: '120px',
       //分页查询参数
@@ -139,40 +107,45 @@ export default {
     this.getData()
   },
   methods: {
+    //获取数据
     async getData() {
-      let res = await this.$api.USER_LIST(this.page)
+      let res = await this.$api.DEPT_LIST(this.page)
       this.data = res.data.records
       Object.assign(this.page,res.data)
     },
+    //批量删除
     async handleBatchDelete() {
       this.batchDelVisible = false
       let ids = []
       for (let i = 0; i < this.multipleSelection.length; i++) {
         ids.push(this.multipleSelection[i].id)
       }
-      let res = await this.$api.USER_DELETE({
+      let res = await this.$api.DEPT_DELETE({
         ids: ids
       })
       this.getData()
     },
+    //删除
     async hanleSingleDelete(row) {
-      let res = await this.$api.USER_DELETE({
+      let res = await this.$api.DEPT_DELETE({
         ids: [row.id]
       })
       this.getData()
     },
+    //新增
     handleAdd() {
       this.title = '新增'
-      this.form = {userState:1}
+      this.form = {roleState:1}
       this.dialogFormVisible = true
     },
+    //持久化数据
     async postAdd() {
       this.loading = true
       let res = ''
       if (this.title === '新增') {
-        res = await this.$api.USER_ADD(this.form)
+        res = await this.$api.DEPT_ADD(this.form)
       } else {
-        res = await this.$api.USER_EDIT(this.form)
+        res = await this.$api.DEPT_EDIT(this.form)
       }
       if(res.success){
         this.dialogFormVisible = false
@@ -180,11 +153,11 @@ export default {
       }
       this.loading = false
     },
+    //编辑
     handleEdit(row) {
       this.title = '编辑'
       this.dialogFormVisible = true
       this.form = row
-      //objectFly(this.form,row)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val

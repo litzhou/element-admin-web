@@ -25,5 +25,26 @@ export default {
    //新增角色
    ROLE_ADD : params => { return fetch({url: `/role/add`, method: 'post', data: params})},
    //修改角色
-   ROLE_EDIT : params => { return fetch({url: `/role/edit`, method: 'put', data: params})}
+   ROLE_EDIT : params => { return fetch({url: `/role/edit`, method: 'put', data: params})},
+
+  //分页获取部门列表
+  DEPT_LIST : params => { return fetch({url: `/dept/list`, method: 'get', params: params})},
+  //删除部门列表
+  DEPT_DELETE : params => {return fetch({url: `/dept/delete`, method: 'delete', data: params})},
+  //新增部门
+  DEPT_ADD : params => { return fetch({url: `/dept/add`, method: 'post', data: params})},
+  //修改部门
+  DEPT_EDIT : params => { return fetch({url: `/dept/edit`, method: 'put', data: params})},
+
+  
+  //分页获取日志列表
+  LOG_LIST : params => { return fetch({url: `/log/list`, method: 'get', params: params})},
+
+  //菜单
+  //根据父级菜单ID获取子菜单列表
+  MENU_BY_PID : params => { return fetch({url: `/menu/getListByPid`, method: 'get', params: params})},
+  //根据角色ID获取角色权限，得到的结果角色用有的菜单ID集合
+  FIND_MENU_ID_BY_ROLE_ID : params => { return fetch({url: `/roleMenu/getMenuIdByRoleId`, method: 'get', params: params})},
+  //分配权限
+  AUTH_SAVE : params => { return fetch({url: `/roleMenu/saveAuth`, method: 'post', params: params})}
 }

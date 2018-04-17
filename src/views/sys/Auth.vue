@@ -2,13 +2,34 @@
   <div>
     <el-row :gutter="10">
       <el-col :xs="6" :lg="6">
-          <el-menu>
-            <el-menu-item v-for="item in roleList" index="itmm.id">{{ item.roleName }}</el-menu-item>
+        <el-card shadow="hover">
+          <div slot="header" class="clearfix">
+            <span>选择角色</span>
+            <el-tooltip class="item" effect="dark" content="刷新" placement="top-start">
+              <el-button style="float: right; padding: 3px 0" type="text" @click="getAllRole">
+                <v-icon name="icon-refresh"></v-icon>
+              </el-button>
+            </el-tooltip>
+          </div>
+          <el-menu style="max-height:600px;overflow-y:auto;">
+            <el-menu-item v-for="item in roleList" :index="item.id" @click="changeChecked(item.id)">
+              {{ item.roleName }}
+           </el-menu-item>
           </el-menu>
+        </el-card>
       </el-col>
       <el-col :xs="18" :lg="18">
         <el-card class="no-shadow">
-          <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+          <div slot="header" class="clearfix">
+            <span>选择权限</span>
+          </div>
+          <el-container style="max-height:600px;overflow-y:auto;">
+            <el-tree node-key="id" :default-checked-keys="checkedKeys"   default-expand-all ref="tree"
+            :data="data" :props="defaultProps" lazy show-checkbox :load="loadNode"></el-tree>
+          </el-container>
+          <div style="padding:10px;">
+             <el-button type="primary" @click="handleSaveAuth" :disabled="this.roleId===null">保存权限</el-button>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -18,59 +39,45 @@
 export default {
   data() {
     return {
-      roleList: [{roleName:'超级管理员'},{roleName:'普通管理员'}],
-      data: [{
-        label: '一级 1',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        label: '一级 2',
-        children: [{
-          label: '二级 2-1',
-          children: [{
-            label: '三级 2-1-1'
-          }]
-        }, {
-          label: '二级 2-2',
-          children: [{
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        label: '一级 3',
-        children: [{
-          label: '二级 3-1',
-          children: [{
-            label: '三级 3-1-1'
-          }]
-        }, {
-          label: '二级 3-2',
-          children: [{
-            label: '三级 3-2-1'
-          }]
-        }]
-      }],
+      roleId: null,
+      roleList: [],
+      checkedKeys: [],
       defaultProps: {
-        children: 'children',
-        label: 'label'
+        id: 'id',
+        label: 'menuName'
       }
     }
   },
   methods: {
-    handleNodeClick(data) {
-      console.log(data)
-    },
+    //获取角色
     async getAllRole(){
       let res = await this.$api.ROLE_ALL_LIST()
       this.roleList = res.data
+    },
+    //获取菜单
+    async loadNode(node, resolve){
+      let pid = '0';
+      if (node.id > 0) {
+        pid = node.key
+      }
+      let res = await this.$api.MENU_BY_PID({pid:pid})
+      return  resolve(res.data)
+
+    },
+    //选择角色，查询角色权限
+    async changeChecked(id){
+      this.roleId = id
+      let res = await this.$api.FIND_MENU_ID_BY_ROLE_ID({roleId:id})
+      this.checkedKeys = res.data;
+      this.$refs.tree.setCheckedKeys(this.checkedKeys);
+    },
+    //保存权限
+   async handleSaveAuth(){
+      let chenckedIds = this.$refs.tree.getCheckedKeys();
+      let res = await this.$api.AUTH_SAVE({roleId:this.roleId,authIds:chenckedIds})
     }
   },
   created() {
-    //this.mockDemo()
     this.getAllRole()
   }
 }

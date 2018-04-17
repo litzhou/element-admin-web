@@ -89,7 +89,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="postUser">确 定</el-button>
+        <el-button type="primary" @click="postAdd">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -154,7 +154,7 @@ export default {
       this.form = {roleState:1}
       this.dialogFormVisible = true
     },
-    async postUser() {
+    async postAdd() {
       this.loading = true
       let res = ''
       if (this.title === '新增') {
@@ -171,7 +171,8 @@ export default {
     handleEdit(row) {
       this.title = '编辑'
       this.dialogFormVisible = true
-      objectFly(this.form,row)
+      this.form = row
+     // objectFly(this.form,row)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
