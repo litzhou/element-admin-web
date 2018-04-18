@@ -25,7 +25,7 @@
         <el-input placeholder="输入关键词按回车" v-model="page.search"  suffix-icon="el-icon-search" clearable style="width:200px;"  @keyup.enter.native="handleSearch"></el-input>
       </div>
       <!-- 表格 -->
-      <el-table :data="data" stripe  @selection-change="handleSelectionChange" style="width: 100%">
+      <el-table :data="data" border stripe  @selection-change="handleSelectionChange" style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
         <el-table-column prop="userImg" label="头像" width="60">

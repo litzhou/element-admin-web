@@ -60,7 +60,7 @@ export const asyncRouterMap = [
     path: '/',
     name: 'Sys',
     component: Layout,
-    meta: { title: '系统管理', icon: 'icon-manage'},
+    meta: { title: '扩展组件', icon: 'icon-manage'},
     redirect: '/index',
     children: [
       {
@@ -88,7 +88,17 @@ export const asyncRouterMap = [
         name: 'CRUD',
         component: lazyLoading('views/auth/CRUD'),
         meta: { auth: "crud", title: '增删改查'}
-      }, {
+      }
+    ]
+  },
+  {
+    path: '/',
+    name: 'Sys',
+    component: Layout,
+    meta: { title: '系统管理', icon: 'icon-group'},
+    redirect: '/index',
+    children: [
+      {
         path: '/user',
         name: 'User',
         component: lazyLoading('views/sys/User'),
@@ -102,12 +112,12 @@ export const asyncRouterMap = [
         path: '/menu',
         name: 'Menu',
         component: lazyLoading('views/sys/Menu'),
-        meta: { title: '菜单管理'}
+        meta: { title: '资源管理'}
       },{
         path: '/auth',
         name: 'Auth',
         component: lazyLoading('views/sys/Auth'),
-        meta: { title: '权限管理'}
+        meta: { title: '分配权限'}
       },{
         path: '/dept',
         name: 'Dept',

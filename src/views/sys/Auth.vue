@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!-- 导航栏 -->
+    <div style="padding: 10px;">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+        <el-breadcrumb-item>分配权限</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <el-row :gutter="10">
       <el-col :xs="6" :lg="6">
         <el-card shadow="hover">
@@ -11,9 +18,9 @@
               </el-button>
             </el-tooltip>
           </div>
-          <el-menu style="max-height:600px;overflow-y:auto;">
+          <el-menu style="max-height:600px;overflow-y:auto;" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
             <el-menu-item v-for="item in roleList" :index="item.id" @click="changeChecked(item.id)">
-              {{ item.roleName }}
+              {{ item.roleName }} <v-icon name="icon-enter" ></v-icon>
            </el-menu-item>
           </el-menu>
         </el-card>

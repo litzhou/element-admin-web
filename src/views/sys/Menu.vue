@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!-- 导航栏 -->
+    <div style="padding: 10px;">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+        <el-breadcrumb-item>资源管理</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <el-row :gutter="10">
       <el-col :xs="6" :lg="6">
         <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
