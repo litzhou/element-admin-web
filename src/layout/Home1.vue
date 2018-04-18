@@ -57,7 +57,9 @@ export default {
   data() {
     return {
       screenfull: false,
-      layout: Cookies.get('layout') ? Cookies.get('layout') : '固定布局'
+      layout: Cookies.get('layout') ? Cookies.get('layout') : '固定布局',
+      light:{name:'light', backgroundColor: "#ffffff" , textColor: "#303133" , activeTextColor: "#409EFF" },
+      dark:{name:'dark', backgroundColor: "#545c64" , textColor: "#fff" , activeTextColor: "#ffd04b" }
     }
   },
   computed: {
@@ -136,25 +138,19 @@ export default {
       //window.location.reload()
       this.$router.push('login')
     },
+    //改变主题
     changeTheme(value){
-      let theme = {}
-      if(value === 'dark'){
-        theme = {
-          name:'dark',
-          backgroundColor: "#545c64" ,
-          textColor: "#fff" ,
-          activeTextColor: "#ffd04b" 
-        }
-      }else{
-        theme = {
-          name:'light',
-          backgroundColor: "#ffffff" ,
-          textColor: "#303133" ,
-          activeTextColor: "#409EFF" 
-        }
-      }
-       this.$store.commit('SET_THEME', theme)
+       this.$store.commit('SET_THEME', value === 'dark' ? this.dark : this.light)
+       window.localStorage.setItem('theme',value)
+    },
+    //刷新初始化主题
+    initTheme(){
+      let theme = window.localStorage.getItem('theme') 
+      this.$store.commit('SET_THEME',(theme && theme === 'light') ? this.light :this.dark )
     }
+  },
+  created(){
+    this.initTheme()
   },
   mounted() {
     if (this.$store.state.sys.role === 'guest') {

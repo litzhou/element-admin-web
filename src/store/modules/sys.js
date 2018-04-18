@@ -9,12 +9,7 @@ const state = {
   menu: null, // 菜单
   lang: 'zh', // 语言
   user: null,
-  theme: {
-    name:'dark',
-    backgroundColor: "#545c64" ,
-    textColor: "#fff" ,
-    activeTextColor: "#ffd04b" 
-  }
+  theme: null,
 }
 
 function hasMenu(menu, route) {
