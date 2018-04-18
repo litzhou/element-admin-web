@@ -8,12 +8,9 @@
       </el-breadcrumb>
     </div>
     <el-card>
-      <!-- 菜单年 -->
+      <!-- 菜单栏 -->
       <div slot="header" class="clearfix">
         <el-button type="primary" @click="handleAdd">新增</el-button>
-       <!--
-           <el-button type="danger" @click="handleDelete" v-show="multipleSelection.length>0">批量删除</el-button>
-       -->
         <el-popover
           placement="top"
           ref="popover5"
@@ -93,6 +90,29 @@
             <el-option label="禁用" :value="-1"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="部门" :label-width="formLabelWidth">
+         <el-select v-model="form.deptId" placeholder="请选择部门">
+          <el-option
+            v-for="item in depts"
+            :key="item.id"
+            :label="item.deptName"
+            :value="item.id">
+          </el-option>
+        </el-select>
+        </el-form-item>
+        <el-form-item label="角色" :label-width="formLabelWidth">
+          <el-select
+            v-model="form.roleIds"
+            multiple
+            placeholder="请选择角色">
+            <el-option
+              v-for="item in roles"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="描述" :label-width="formLabelWidth">
           <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.userDesc">
           </el-input>
@@ -107,8 +127,6 @@
 </template>
 
 <script>
-import {objectFly} from '@/util/index'
-import { fail } from 'assert';
 export default {
   data() {
     return {
@@ -118,12 +136,16 @@ export default {
       dialogFormVisible: false,
       title: '新增',
       batchDelVisible:false,
+      depts: [], //部门
+      roles: [], //角色
       form: {
         id:'',
         userName: '',
         password: '',
         userState: 1,
-        userDesc: ''
+        userDesc: '',
+        deptId: '',
+        roleIds: []
       },
       formLabelWidth: '120px',
       //分页查询参数
@@ -137,12 +159,26 @@ export default {
   },
   created() {
     this.getData()
+    this.getAllDept()
+    this.getAllRole()
   },
   methods: {
+    //获取用户列表
     async getData() {
       let res = await this.$api.USER_LIST(this.page)
       this.data = res.data.records
       Object.assign(this.page,res.data)
+      delete this.page.records
+    },
+    //获取所有角色
+    async getAllRole(){
+      let res = await this.$api.ROLE_ALL_LIST()
+      this.roles = res.data
+    },
+    //获取部门列表
+    async getAllDept() {
+      let res = await this.$api.DEPT_ALL_LIST()
+      this.depts = res.data
     },
     async handleBatchDelete() {
       this.batchDelVisible = false
@@ -161,11 +197,13 @@ export default {
       })
       this.getData()
     },
+    //新增
     handleAdd() {
       this.title = '新增'
-      this.form = {userState:1}
+      this.form = {userState:1,roleIds:[]}
       this.dialogFormVisible = true
     },
+    //持久化数据
     async postAdd() {
       this.loading = true
       let res = ''
@@ -180,11 +218,15 @@ export default {
       }
       this.loading = false
     },
-    handleEdit(row) {
+    //编辑
+    async handleEdit(row) {
       this.title = '编辑'
       this.dialogFormVisible = true
-      this.form = row
-      //objectFly(this.form,row)
+      Object.assign(this.form,row,{roleIds:[]})
+      this.loading = true
+      let res = await this.$api.ROLE_ID_BY_UID({userId:row.id})
+      this.form.roleIds = res.data
+      this.loading = false
     },
     handleSelectionChange(val) {
       this.multipleSelection = val

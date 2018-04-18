@@ -56,6 +56,9 @@ export default {
     },
     //获取菜单
     async loadNode(node, resolve){
+      if(node.level === 3){
+        return resolve([])
+      }
       let pid = '0';
       if (node.id > 0) {
         pid = node.key

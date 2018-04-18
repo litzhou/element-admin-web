@@ -131,6 +131,7 @@ export default {
       let res = await this.$api.ROLE_LIST(this.page)
       this.data = res.data.records
       Object.assign(this.page,res.data)
+      delete this.page.records
     },
     async handleBatchDelete() {
       this.batchDelVisible = false

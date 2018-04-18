@@ -112,6 +112,7 @@ export default {
       let res = await this.$api.DEPT_LIST(this.page)
       this.data = res.data.records
       Object.assign(this.page,res.data)
+      delete this.page.records
     },
     //批量删除
     async handleBatchDelete() {
