@@ -6,3 +6,4 @@ export const SET_LANG = 'SET_LANG' // 语言
 export const LAYOUT = 'LAYOUT' // 布局
 export const FILTER_MENU = 'FILTER_MENU' // 过滤菜单
 export const SET_USER = 'SET_USER' // 过滤菜单
+export const SET_THEME = 'SET_THEME' // 设置主题

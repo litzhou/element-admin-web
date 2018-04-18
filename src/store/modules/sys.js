@@ -8,7 +8,13 @@ const state = {
   isCollapse: false, // 菜单状态是否收起
   menu: null, // 菜单
   lang: 'zh', // 语言
-  user: null
+  user: null,
+  theme: {
+    name:'dark',
+    backgroundColor: "#545c64" ,
+    textColor: "#fff" ,
+    activeTextColor: "#ffd04b" 
+  }
 }
 
 function hasMenu(menu, route) {
@@ -73,6 +79,11 @@ const mutations = {
   // 设置登录用户
   [types.SET_USER](state, payload) {
     state.user = payload
+  },
+
+  // 设置主题
+  [types.SET_THEME](state, payload) {
+    state.theme = payload
   }
 }
 

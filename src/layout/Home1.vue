@@ -2,8 +2,17 @@
   <el-container id="main">
     <el-header class="v-header">
        <v-icon name="icon-xuanxiang" class="menu" @click.native="handlerIsCollapse"></v-icon>
-          <div id="t-title">甘肃米粒电子商务有限公司</div>
+          <div id="t-title">基于ElementUI和SpringBoot的后台管理系统</div>
           <div class="logout">
+            <el-tooltip :content="theme.name" placement="top">
+              <el-switch
+                v-model="theme.name"
+                active-color="#dddddd"
+                active-value="light"
+                inactive-color="#545c64"
+                inactive-value="dark" @change="changeTheme">
+              </el-switch>
+            </el-tooltip>
             <el-tooltip class="item" effect="dark" :content="userName" placement="top-end">
               <h2 style="float:left;padding-right:10px;">{{ userName }}</h2>
             </el-tooltip>
@@ -20,7 +29,11 @@
     </el-header>
     <el-container class="demo-container">
       <el-aside :style="{width:isCollapse?'84px':'220px'}" class="horizontal-collapse-transition">
-         <el-menu @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :default-active="active" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :router="true">
+         <el-menu @select="handleSelect"
+          :background-color="theme.backgroundColor" 
+          :text-color="theme.textColor" 
+          :active-text-color="theme.activeTextColor" 
+          :default-active="active" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :router="true">
         <el-submenu v-for="(sub,i) in menu" :key="i" v-show="!sub.meta.hidden" :index="i+'@'">
           <div slot="title">
             <i class="el-icon iconfont" :class="sub.meta.icon"></i>
@@ -59,6 +72,9 @@ export default {
     },
     userName(){
       return this.$store.state.sys.user.userName
+    },
+    theme(){
+      return this.$store.state.sys.theme
     }
   },
   methods: {
@@ -119,6 +135,25 @@ export default {
       //Cookies.remove('userid')
       //window.location.reload()
       this.$router.push('login')
+    },
+    changeTheme(value){
+      let theme = {}
+      if(value === 'dark'){
+        theme = {
+          name:'dark',
+          backgroundColor: "#545c64" ,
+          textColor: "#fff" ,
+          activeTextColor: "#ffd04b" 
+        }
+      }else{
+        theme = {
+          name:'light',
+          backgroundColor: "#ffffff" ,
+          textColor: "#303133" ,
+          activeTextColor: "#409EFF" 
+        }
+      }
+       this.$store.commit('SET_THEME', theme)
     }
   },
   mounted() {

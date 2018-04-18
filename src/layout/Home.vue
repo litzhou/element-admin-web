@@ -15,7 +15,7 @@
     <el-container>
       <el-header>
         <v-icon name="icon-xuanxiang" class="menu" @click.native="handlerIsCollapse"></v-icon>
-         <div id="t-title">甘肃米粒电子商务有限公司</div>
+         <div id="t-title">基于ElementUI和SpringBoot的后台管理系统</div>
           <div class="logout">
             <el-tooltip class="item" effect="dark" :content="screenfull? '还原': '全屏'" placement="top-end">
               <v-icon :name="screenfull ? 'icon-smallscreen' : 'icon-send'" @click.native="toggleScreen"></v-icon>

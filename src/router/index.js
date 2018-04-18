@@ -47,12 +47,6 @@ export const asyncRouterMap = [
         name: 'Icon',
         component: lazyLoading('components/Icon'),
         meta: {auth: "icon", title: '字体图标'}
-      },
-      {
-        path: '/dep',
-        name: 'Dep',
-        component: lazyLoading('views/sys/Dep'),
-        meta: {auth: "dep", title: '项目依赖'}
       }
     ]
   },
