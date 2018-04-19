@@ -61,18 +61,18 @@
     </el-card>
     <!-- 表单 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" :append-to-body="true">
-      <el-form :model="form" v-loading="loading">
-        <el-form-item label="部门名称" :label-width="formLabelWidth">
+      <el-form :model="form" v-loading="loading"  :rules="rules" ref="form">
+        <el-form-item label="部门名称" :label-width="formLabelWidth" prop="deptName">
           <el-input v-model="form.deptName" auto-complete="off" placeholder="请输入角色名"></el-input>
         </el-form-item>
-        <el-form-item label="部门描述" :label-width="formLabelWidth">
+        <el-form-item label="部门描述" :label-width="formLabelWidth" prop="deptDesc">
           <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.deptDesc">
           </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="postAdd">确 定</el-button>
+        <el-button @click="cancelForm">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -88,12 +88,17 @@ export default {
       dialogFormVisible: false,
       title: '新增',
       batchDelVisible:false,
+      formLabelWidth: '120px',
       form: {
         id:'',
         deptName: '',
         deptDesc: ''
       },
-      formLabelWidth: '120px',
+      rules:{
+        deptName:[
+          { required: true, message: '请输入部门名称', trigger: 'blur' },
+        ]
+      },
       //分页查询参数
       page: {
         search: '',
@@ -139,8 +144,19 @@ export default {
       this.form = {roleState:1}
       this.dialogFormVisible = true
     },
+     //提交表单
+    submitForm() {
+      this.$refs['form'].validate((valid) => {
+        if(valid){ this.postData() }
+      });
+    },
+    //取消表单
+    cancelForm(){
+      this.dialogFormVisible = false
+      this.$refs["form"].resetFields()
+    },
     //持久化数据
-    async postAdd() {
+    async postData() {
       this.loading = true
       let res = ''
       if (this.title === '新增') {

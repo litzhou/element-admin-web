@@ -72,11 +72,11 @@
     </el-card>
     <!-- 表单 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" :append-to-body="true">
-      <el-form :model="form" v-loading="loading">
-        <el-form-item label="角色名称" :label-width="formLabelWidth">
+      <el-form :model="form" v-loading="loading" :rules="rules" ref="form">
+        <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
           <el-input v-model="form.roleName" auto-complete="off" placeholder="请输入角色名"></el-input>
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
+        <el-form-item label="状态" :label-width="formLabelWidth" prop="roleState">
           <el-select v-model="form.roleState" placeholder="请选择状态">
             <el-option label="启用" :value="1"></el-option>
             <el-option label="禁用" :value="-1"></el-option>
@@ -88,8 +88,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="postAdd">确 定</el-button>
+        <el-button @click="cancelForm">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -107,13 +107,19 @@ export default {
       dialogFormVisible: false,
       title: '新增',
       batchDelVisible:false,
+      formLabelWidth: '120px',
       form: {
         id:'',
         roleName: '',
         roleState: 1,
         roleDesc: ''
       },
-      formLabelWidth: '120px',
+      rules:{
+        roleName:[
+          { required: true, message: '请输入角色名称', trigger: 'blur' },
+        ],
+        roleState:[{ required: true, message: '请选择状态', trigger: 'blur' }]
+      },
       //分页查询参数
       page: {
         search: '',
@@ -127,12 +133,14 @@ export default {
     this.getData()
   },
   methods: {
+    //查询数据
     async getData() {
       let res = await this.$api.ROLE_LIST(this.page)
       this.data = res.data.records
       Object.assign(this.page,res.data)
       delete this.page.records
     },
+    //批量删除
     async handleBatchDelete() {
       this.batchDelVisible = false
       let ids = []
@@ -144,18 +152,32 @@ export default {
       })
       this.getData()
     },
+    //删除
     async hanleSingleDelete(row) {
       let res = await this.$api.ROLE_DELETE({
         ids: [row.id]
       })
       this.getData()
     },
+    //新增
     handleAdd() {
       this.title = '新增'
       this.form = {roleState:1}
       this.dialogFormVisible = true
     },
-    async postAdd() {
+     //提交表单
+    submitForm() {
+      this.$refs['form'].validate((valid) => {
+        if(valid){ this.postData() }
+      });
+    },
+    //取消表单
+    cancelForm(){
+      this.dialogFormVisible = false
+      this.$refs["form"].resetFields()
+    },
+    //持久化数据
+    async postData() {
       this.loading = true
       let res = ''
       if (this.title === '新增') {

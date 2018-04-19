@@ -49,14 +49,14 @@
           <div slot="header" class="clearfix">
             <span>编辑权限</span>
           </div>
-          <el-form :model="form" v-loading="loading" style="height:600px;overflow-y:auto;">
+          <el-form :model="form" v-loading="loading" style="height:600px;overflow-y:auto;" :rules="rules" ref="form">
             <el-form-item label="ID" :label-width="formLabelWidth" >
               <el-input v-model="form.id"  disabled auto-complete="off" placeholder="请输入菜单名称"></el-input>
             </el-form-item>
-            <el-form-item label="菜单名称" :label-width="formLabelWidth">
+            <el-form-item label="菜单名称" :label-width="formLabelWidth" prop="menuName">
               <el-input v-model="form.menuName" auto-complete="off" placeholder="请输入菜单名称"></el-input>
             </el-form-item>
-            <el-form-item label="权限资源" :label-width="formLabelWidth">
+            <el-form-item label="权限资源" :label-width="formLabelWidth" prop="resource">
               <el-input v-model="form.resource" auto-complete="off" placeholder="请输入菜单资源名称"></el-input>
             </el-form-item>
             <el-form-item label="URL" :label-width="formLabelWidth">
@@ -105,7 +105,15 @@ export default {
         resource: '',
         sort:'',
         deep:''
-      }
+      },
+      rules:{
+        menuName:[
+          { required: true, message: '请输入菜单名称', trigger: 'blur' },
+        ],
+        resource:[
+          { required: true, message: '请输入菜单名称', trigger: 'blur' },
+        ]
+      },
     }
   },
   methods: {
@@ -141,7 +149,12 @@ export default {
       let res = await this.$api.AUTH_SAVE({roleId:this.roleId,authIds:chenckedIds})
     },
     //编辑权限
-   async handlerEdit(){
+    handlerEdit(){
+      this.$refs['form'].validate((valid) => {
+        if(valid){ this.postData() }
+      });
+    },
+    async postData(){
       let res = await this.$api.MENU_EDIT(this.form)
     },
     //节点点击

@@ -77,20 +77,20 @@
     </el-card>
     <!-- 表单 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" :append-to-body="true">
-      <el-form :model="form" v-loading="loading">
-        <el-form-item label="用户名" :label-width="formLabelWidth">
+      <el-form :model="form" v-loading="loading" :rules="rules" ref="form">
+        <el-form-item label="用户名" :label-width="formLabelWidth" prop="userName">
           <el-input v-model="form.userName" auto-complete="off" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
+        <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
           <el-input v-model="form.password" type="password" placeholder="请输入用密码"></el-input>
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
+        <el-form-item label="状态" :label-width="formLabelWidth" prop="userState">
           <el-select v-model="form.userState" placeholder="请选择状态">
             <el-option label="启用" :value="1"></el-option>
             <el-option label="禁用" :value="-1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="部门" :label-width="formLabelWidth">
+        <el-form-item label="部门" :label-width="formLabelWidth" prop="deptId">
          <el-select v-model="form.deptId" placeholder="请选择部门">
           <el-option
             v-for="item in depts"
@@ -119,8 +119,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="postAdd">确 定</el-button>
+        <el-button @click="cancelForm">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -138,6 +138,7 @@ export default {
       batchDelVisible:false,
       depts: [], //部门
       roles: [], //角色
+      formLabelWidth: '120px',
       form: {
         id:'',
         userName: '',
@@ -147,7 +148,15 @@ export default {
         deptId: '',
         roleIds: []
       },
-      formLabelWidth: '120px',
+      rules:{
+        userName:[
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
+        ],
+        password:[{ required: true, message: '请输入密码', trigger: 'blur' }],
+        deptId:[{ required: true, message: '请选择部门', trigger: 'blur' }],
+        userState:[{ required: true, message: '请选择状态', trigger: 'blur' }]
+      },
       //分页查询参数
       page: {
         search: '',
@@ -180,6 +189,7 @@ export default {
       let res = await this.$api.DEPT_ALL_LIST()
       this.depts = res.data
     },
+    //批量删除
     async handleBatchDelete() {
       this.batchDelVisible = false
       let ids = []
@@ -191,6 +201,7 @@ export default {
       })
       this.getData()
     },
+    //单条删除
     async hanleSingleDelete(row) {
       let res = await this.$api.USER_DELETE({
         ids: [row.id]
@@ -203,8 +214,19 @@ export default {
       this.form = {userState:1,roleIds:[]}
       this.dialogFormVisible = true
     },
+    //提交表单
+    submitForm() {
+      this.$refs['form'].validate((valid) => {
+        if(valid){ this.postData() }
+      });
+    },
+    //取消表单
+    cancelForm(){
+      this.dialogFormVisible = false
+      this.$refs["form"].resetFields()
+    },
     //持久化数据
-    async postAdd() {
+    async postData(){
       this.loading = true
       let res = ''
       if (this.title === '新增') {
