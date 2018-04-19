@@ -147,9 +147,17 @@ export default {
     initTheme(){
       let theme = window.localStorage.getItem('theme') 
       this.$store.commit('SET_THEME',(theme && theme === 'light') ? this.light :this.dark )
+    },
+    //初始化菜单
+    /** 
+    async initMenu(){
+      let res = await this.$api.LOGIN_AUTH()
+      this.$store.commit('FILTER_MENU', res.data)
     }
+    */
   },
   created(){
+    //this.initMenu()
     this.initTheme()
   },
   mounted() {

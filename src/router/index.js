@@ -40,13 +40,13 @@ export const asyncRouterMap = [
         path: '/index',
         name: 'Index',
         component: lazyLoading('views/Index'),
-        meta: { auth: "index", title: '控制台'}
+        meta: { title: '控制台'}
       },
       {
         path: '/icon',
         name: 'Icon',
         component: lazyLoading('components/Icon'),
-        meta: {auth: "icon", title: '字体图标'}
+        meta: {title: '字体图标'}
       }
     ]
   },
@@ -61,27 +61,27 @@ export const asyncRouterMap = [
         path: '/lang',
         name: 'Lang',
         component: lazyLoading('views/i18n/Lang'),
-        meta: { auth: "lang", title: '语言国际化'}
+        meta: { title: '语言国际化'}
       }, {
         path: '/echarts',
         name: 'Echarts',
         component: lazyLoading('views/echarts/Index'),
-        meta: { auth: "echarts", title: '百度图表'}
+        meta: { title: '百度图表'}
       }, {
         path: '/editor',
         name: 'Editor',
         component: lazyLoading('views/editor/Editor'),
-        meta: { auth: "editor", title: '富文本编辑器'}
+        meta: { title: '富文本编辑器'}
       },{
         path: '/markdown',
         name: 'Markdown',
         component: lazyLoading('views/editor/Markdown'),
-        meta: {auth: "markdown", title: 'Markdown编辑器'}
+        meta: { title: 'Markdown编辑器'}
       }, {
         path: '/crud',
         name: 'CRUD',
         component: lazyLoading('views/auth/CRUD'),
-        meta: { auth: "crud", title: '增删改查'}
+        meta: {  title: '增删改查'}
       }
     ]
   },
@@ -96,12 +96,12 @@ export const asyncRouterMap = [
         path: '/user',
         name: 'User',
         component: lazyLoading('views/sys/User'),
-        meta: { title: '用户管理'}
+        meta: { auth: 'user', title: '用户管理'}
       }, {
         path: '/role',
         name: 'Role',
         component: lazyLoading('views/sys/Role'),
-        meta: { title: '角色管理'}
+        meta: {auth: 'role', title: '角色管理'}
       }, /**{
         path: '/menu',
         name: 'Menu',
@@ -111,17 +111,17 @@ export const asyncRouterMap = [
         path: '/auth',
         name: 'Auth',
         component: lazyLoading('views/sys/Auth'),
-        meta: { title: '分配权限'}
+        meta: { auth: 'auth', title: '分配权限'}
       },{
         path: '/dept',
         name: 'Dept',
         component: lazyLoading('views/sys/Dept'),
-        meta: { title: '部门管理'}
+        meta: { auth: 'dept', title: '部门管理'}
       },{
         path: '/log',
         name: 'Log',
         component: lazyLoading('views/sys/Log'),
-        meta: { title: '日志管理'}
+        meta: { auth: 'log', title: '日志管理'}
       }
     ]
   },

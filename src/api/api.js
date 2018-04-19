@@ -2,16 +2,17 @@ import fetch from './fetch'
 
 export default {
   // 登录
-   LOGIN : params => {return fetch({url: '/login/doLogin', method: 'post', data: params})},
-
-   /**
-    * 用户
-    */
+  LOGIN : params => {return fetch({url: '/login/doLogin', method: 'post', data: params})},
+  //获取登录用户的权限
+  LOGIN_AUTH :  params => {  return fetch({url: `/login/auth`, method: 'get', params: params})},
+  /**
+  * 用户
+  */
    //获取用户信息
    GET_USER_INFO :  params => {  return fetch({url: `/login/info`, method: 'get', params: params})},
    //分页获取用户列表
    USER_LIST : params => { return fetch({url: `/user/list`, method: 'get', params: params})},
-  //删除用户列表
+   //删除用户列表
    USER_DELETE : params => {return fetch({url: `/user/delete`, method: 'delete', data: params})},
    //新增用户
    USER_ADD : params => { return fetch({url: `/user/add`, method: 'post', data: params})},
