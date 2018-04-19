@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '@/router'
 import NProgress from 'nprogress'
-import { Notification } from 'element-ui'
+import { Notification, Message  } from 'element-ui'
 import 'nprogress/nprogress.css'
 // import isJSON from 'is-json'
 // var isProduction = process.env.NODE_ENV === 'production'
@@ -72,14 +72,17 @@ export default function fetch(options) {
           if (res.status === 200) {
             resolve(res.data)
             if(res.data.success){
+              let msg = res.data.message ? `服务器响应结果:${res.data.message}` : ' OK' ;
               /**
-              let msg = res.data.message ? `服务器响应结果:${res.data.message}` : 'OK' ;
               Notification.success({
                 title:'成功',
                 dangerouslyUseHTMLString:true,
                 message: msg + '<br/>' + baseURL + options.url
               })
                */
+              Message.success({
+                message: msg
+              })
             }else{
               Notification.error({
                 title:'异常',
