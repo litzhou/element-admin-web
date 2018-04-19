@@ -3,8 +3,7 @@ import fetch from './fetch'
 export default {
   // 登录
    LOGIN : params => {return fetch({url: '/login/doLogin', method: 'post', data: params})},
-  //获取菜单
-   GET_MENU :  params => { return fetch({url: `/api/menu`, method: 'get', params: params})},
+
    /**
     * 用户
     */
@@ -59,9 +58,10 @@ export default {
   LOG_LIST : params => { return fetch({url: `/log/list`, method: 'get', params: params})},
 
   /**
-   * 权限
+   * 菜单/权限
    */
-  //菜单
+  //编辑菜单
+  MENU_EDIT : params => { return fetch({url: `/menu/edit`, method: 'put', data: params})},
   //根据父级菜单ID获取子菜单列表
   MENU_BY_PID : params => { return fetch({url: `/menu/getListByPid`, method: 'get', params: params})},
   //根据角色ID获取角色权限，得到的结果角色用有的菜单ID集合

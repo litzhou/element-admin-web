@@ -18,7 +18,7 @@
               </el-button>
             </el-tooltip>
           </div>
-          <el-menu style="max-height:600px;overflow-y:auto;" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-menu style="max-height:600px;overflow-y:auto;">
             <el-menu-item v-for="item in roleList" :index="item.id" @click="changeChecked(item.id)">
               {{ item.roleName }} <v-icon name="icon-enter" ></v-icon>
            </el-menu-item>
@@ -32,7 +32,11 @@
           </div>
           <el-container style="max-height:600px;overflow-y:auto;">
             <el-tree node-key="id" :default-checked-keys="checkedKeys"   default-expand-all ref="tree"
-            :data="data" :props="defaultProps" lazy show-checkbox :load="loadNode"></el-tree>
+            :data="data" :props="defaultProps" lazy show-checkbox :load="loadNode">
+              <span slot-scope="{ node, data }">
+                <span>{{ node.label }} {{node.data.resource ? '('+node.data.resource+')' : ''}}</span>
+              </span>
+            </el-tree>
           </el-container>
           <div style="padding:10px;">
              <el-button type="primary" @click="handleSaveAuth" :disabled="this.roleId===null">保存权限</el-button>
