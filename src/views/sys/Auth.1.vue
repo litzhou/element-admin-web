@@ -18,21 +18,21 @@
               </el-button>
             </el-tooltip>
           </div>
-          <el-menu style="height:600px;overflow-y:auto;">
+          <el-menu style="max-height:600px;overflow-y:auto;">
             <el-menu-item v-for="item in roleList" :index="item.id" @click="changeChecked(item.id)">
               {{ item.roleName }} <v-icon name="icon-enter" ></v-icon>
            </el-menu-item>
           </el-menu>
         </el-card>
       </el-col>
-      <el-col :xs="9" :lg="9">
+      <el-col :xs="18" :lg="18">
         <el-card class="no-shadow">
           <div slot="header" class="clearfix">
             <span>选择权限</span>
           </div>
-          <el-container style="height:550px;overflow-y:auto;">
-            <el-tree node-key="id" :default-checked-keys="checkedKeys"   default-expand-all ref="tree" style="width:100%"
-            :data="data" :props="defaultProps" lazy show-checkbox :load="loadNode"  @node-click="nodeClick">
+          <el-container style="max-height:600px;overflow-y:auto;">
+            <el-tree node-key="id" :default-checked-keys="checkedKeys"   default-expand-all ref="tree"
+            :data="data" :props="defaultProps" lazy show-checkbox :load="loadNode">
               <span slot-scope="{ node, data }">
                 <span>{{ node.label }} {{node.data.resource ? '('+node.data.resource+')' : ''}}</span>
               </span>
@@ -43,39 +43,6 @@
           </div>
         </el-card>
       </el-col>
-
-      <el-col :xs="9" :lg="9">
-        <el-card class="no-shadow">
-          <div slot="header" class="clearfix">
-            <span>编辑权限</span>
-          </div>
-          <el-form :model="form" v-loading="loading" style="height:600px;overflow-y:auto;">
-            <el-form-item label="ID" :label-width="formLabelWidth" >
-              <el-input v-model="form.id"  disabled auto-complete="off" placeholder="请输入菜单名称"></el-input>
-            </el-form-item>
-            <el-form-item label="菜单名称" :label-width="formLabelWidth">
-              <el-input v-model="form.menuName" auto-complete="off" placeholder="请输入菜单名称"></el-input>
-            </el-form-item>
-            <el-form-item label="权限资源" :label-width="formLabelWidth">
-              <el-input v-model="form.resource" auto-complete="off" placeholder="请输入菜单资源名称"></el-input>
-            </el-form-item>
-            <el-form-item label="排序" :label-width="formLabelWidth">
-              <el-input v-model="form.sort" auto-complete="off" type="number" placeholder="排序"></el-input>
-            </el-form-item>
-            <el-form-item label="编码" :label-width="formLabelWidth">
-              <el-input v-model="form.code" auto-complete="off"  placeholder="编码"></el-input>
-            </el-form-item>
-            <el-form-item label="深度" :label-width="formLabelWidth">
-              <el-input v-model="form.deep"  disabled auto-complete="off"  placeholder="深度"></el-input>
-            </el-form-item>
-            <el-form-item label="" :label-width="formLabelWidth">
-              <el-button type="primary" @click="handlerEdit" :disabled="form.id===''">保存</el-button>
-              <el-button @click="form = {id:''}">取消</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
-      </el-col>
-
     </el-row>
   </div>
 </template>
@@ -89,16 +56,6 @@ export default {
       defaultProps: {
         id: 'id',
         label: 'menuName'
-      },
-      formLabelWidth: '100px',
-      form:{
-        id: '',
-        code: '',
-        menuName: '',
-        pid: '',
-        resource: '',
-        sort:'',
-        deep:''
       }
     }
   },
@@ -123,24 +80,15 @@ export default {
     },
     //选择角色，查询角色权限
     async changeChecked(id){
-      this.form = {id:''}
       this.roleId = id
       let res = await this.$api.FIND_MENU_ID_BY_ROLE_ID({roleId:id})
       this.checkedKeys = res.data;
       this.$refs.tree.setCheckedKeys(this.checkedKeys);
     },
     //保存权限
-    async handleSaveAuth(){
+   async handleSaveAuth(){
       let chenckedIds = this.$refs.tree.getCheckedKeys();
       let res = await this.$api.AUTH_SAVE({roleId:this.roleId,authIds:chenckedIds})
-    },
-    //编辑权限
-   async handlerEdit(){
-      let res = await this.$api.MENU_EDIT(this.form)
-    },
-    //节点点击
-    nodeClick(data) {
-      this.form = data
     }
   },
   created() {
