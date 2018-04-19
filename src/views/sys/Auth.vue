@@ -19,8 +19,8 @@
             </el-tooltip>
           </div>
           <el-menu style="height:600px;overflow-y:auto;">
-            <el-menu-item v-for="item in roleList" :index="item.id" @click="changeChecked(item.id)">
-              {{ item.roleName }} <v-icon name="icon-enter" ></v-icon>
+            <el-menu-item v-for="(item,key) in roleList" :key="key" :index="item.id" @click="changeChecked(item.id)">
+               {{ item.roleName }} <v-icon name="icon-enter" ></v-icon>
            </el-menu-item>
           </el-menu>
         </el-card>

@@ -1,6 +1,6 @@
 <template>
   <div class="v-bg">
-    <el-dialog title="登录"  :visible="centerDialogVisible" width="30%" center :show-close="false" :modal="false">
+    <el-dialog title="Element后台登录"  :visible="centerDialogVisible" width="30%" center :show-close="false" :modal="false">
       <el-form label-width="0px" label-position="left" v-loading="loading" :model="ruleForm" status-icon :rules="rules" ref="ruleForm"  class="demo-ruleForm">
         <el-form-item  prop="username">
           <el-input type="text" v-model="ruleForm.username" auto-complete="off">
@@ -14,8 +14,6 @@
         </el-form-item>
         <el-form-item>
           <el-button style="width:100%" type="primary" @click="submitForm('ruleForm')">登录</el-button>
-          <el-button type="text" @click="resetForm('ruleForm')">重置</el-button>
-          <el-button type="text" style="float:right" @click="register('ruleForm')">注册</el-button>
         </el-form-item>
         <el-alert
         title="用户名: guest 密码:123 / 用户名:admin 密码:123"
@@ -106,12 +104,6 @@ export default {
           return false
         }
       })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    register() {
-      alert('开发中。。。')
     },
     beforeRouteLeave(to, from, next) {
       // 导航离开该组件的对应路由时调用
