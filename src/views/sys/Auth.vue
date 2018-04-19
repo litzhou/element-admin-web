@@ -59,6 +59,12 @@
             <el-form-item label="权限资源" :label-width="formLabelWidth">
               <el-input v-model="form.resource" auto-complete="off" placeholder="请输入菜单资源名称"></el-input>
             </el-form-item>
+            <el-form-item label="URL" :label-width="formLabelWidth">
+              <el-input v-model="form.url" auto-complete="off" placeholder="URL"></el-input>
+            </el-form-item>
+            <el-form-item label="图标" :label-width="formLabelWidth">
+              <el-input v-model="form.icon" auto-complete="off" placeholder="图标"></el-input>
+            </el-form-item>
             <el-form-item label="排序" :label-width="formLabelWidth">
               <el-input v-model="form.sort" auto-complete="off" type="number" placeholder="排序"></el-input>
             </el-form-item>
