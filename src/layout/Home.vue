@@ -133,11 +133,10 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath)
     },
-    logout() {
-     // Cookies.remove('userid')
-      // this.$store.commit('SET_MENU', null)
-      //window.location.reload()
-       this.$router.push('login')
+    //退出
+    async logout(){
+      let res = await this.$api.LOGOUT()
+      this.$router.push('login')
     },
     //改变主题
     changeTheme(value){

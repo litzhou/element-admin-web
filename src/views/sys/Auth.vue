@@ -109,9 +109,6 @@ export default {
       rules:{
         menuName:[
           { required: true, message: '请输入菜单名称', trigger: 'blur' },
-        ],
-        resource:[
-          { required: true, message: '请输入菜单名称', trigger: 'blur' },
         ]
       },
     }

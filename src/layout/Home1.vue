@@ -133,9 +133,9 @@ export default {
     handleSelect(path) {
       this.$router.push(path)
     },
-    logout() {
-      //Cookies.remove('userid')
-      //window.location.reload()
+    //退出
+    async logout(){
+      let res = await this.$api.LOGOUT()
       this.$router.push('login')
     },
     //改变主题

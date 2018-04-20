@@ -96,12 +96,12 @@ export const asyncRouterMap = [
         path: '/user',
         name: 'User',
         component: lazyLoading('views/sys/User'),
-        meta: { auth: 'user', title: '用户管理'}
+        meta: { auth: 'user:list', title: '用户管理'}
       }, {
         path: '/role',
         name: 'Role',
         component: lazyLoading('views/sys/Role'),
-        meta: {auth: 'role', title: '角色管理'}
+        meta: {auth: 'role:list', title: '角色管理'}
       }, /**{
         path: '/menu',
         name: 'Menu',
@@ -111,17 +111,17 @@ export const asyncRouterMap = [
         path: '/auth',
         name: 'Auth',
         component: lazyLoading('views/sys/Auth'),
-        meta: { auth: 'auth', title: '分配权限'}
+        meta: { auth: 'auth:page', title: '分配权限'}
       },{
         path: '/dept',
         name: 'Dept',
         component: lazyLoading('views/sys/Dept'),
-        meta: { auth: 'dept', title: '部门管理'}
+        meta: { auth: 'dept:list', title: '部门管理'}
       },{
         path: '/log',
         name: 'Log',
         component: lazyLoading('views/sys/Log'),
-        meta: { auth: 'log', title: '日志管理'}
+        meta: { auth: 'log:list', title: '日志管理'}
       }
     ]
   },

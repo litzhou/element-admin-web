@@ -3,6 +3,7 @@ import fetch from './fetch'
 export default {
   // 登录
   LOGIN : params => {return fetch({url: '/login/doLogin', method: 'post', data: params})},
+  LOGOUT : params => {return fetch({url: '/login/logout', method: 'get', data: params})},
   //获取登录用户的权限
   LOGIN_AUTH :  params => {  return fetch({url: `/login/auth`, method: 'get', params: params})},
   /**
