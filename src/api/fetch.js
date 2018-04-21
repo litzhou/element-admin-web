@@ -80,9 +80,12 @@ export default function fetch(options) {
                 message: msg + '<br/>' + baseURL + options.url
               })
                */
-              Message.success({
+              /**
+               Message.success({
                 message: msg
               })
+               */
+              
             }else{
               Notification.error({
                 title:'异常',

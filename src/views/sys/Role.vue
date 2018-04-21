@@ -30,6 +30,8 @@
         </el-table-column>
         <el-table-column sortable  prop="roleName" label="角色名称">
         </el-table-column>
+        <el-table-column sortable  prop="roleIdentification" label="角色唯一标识">
+        </el-table-column>
         <el-table-column sortable prop="roleState" label="状态">
           <div slot-scope="scope">
             <span>{{ scope.row.roleState == 1 ? '启用' : '禁用' }}</span>
@@ -76,6 +78,9 @@
         <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
           <el-input v-model="form.roleName" auto-complete="off" placeholder="请输入角色名"></el-input>
         </el-form-item>
+        <el-form-item label="角色唯一标识" :label-width="formLabelWidth" prop="roleIdentification">
+          <el-input v-model="form.roleIdentification" auto-complete="off" placeholder="请输入角色唯一标识"></el-input>
+        </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth" prop="roleState">
           <el-select v-model="form.roleState" placeholder="请选择状态">
             <el-option label="启用" :value="1"></el-option>
@@ -118,6 +123,7 @@ export default {
         roleName:[
           { required: true, message: '请输入角色名称', trigger: 'blur' },
         ],
+        roleIdentification:[{ required: true, message: '请输入角色唯一标识', trigger: 'blur' },],
         roleState:[{ required: true, message: '请选择状态', trigger: 'blur' }]
       },
       //分页查询参数
