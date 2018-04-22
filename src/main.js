@@ -13,6 +13,7 @@ import 'element-ui/lib/theme-chalk/display.css'
 import '@/assets/iconfont/iconfont.css'
 import '@/assets/iconfont/iconfont.js'
 import '@/assets/iconfont/demo.css'
+import '@/icons' // icon
 // 自定义覆盖框架样式
 import './assets/style/cover.stylus'
 import './assets/style/main.stylus'

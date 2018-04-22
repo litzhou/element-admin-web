@@ -1,11 +1,12 @@
 <template>
   <div class="index">
     <div style="padding: 10px;">
-          <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>控制台</el-breadcrumb-item>
-        </el-breadcrumb>
-        </div>
+      <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>控制台</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <panel-group></panel-group>
     <el-row :gutter="10">
       <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
         <el-card>
@@ -149,6 +150,7 @@ import ChartDonut from './chart/Donut'
 import ChartCalendar from './chart/Calendar'
 import ChartSticks from './chart/Sticks'
 import ChartBubble from './chart/Bubble'
+import PanelGroup from './chart/PanelGroup'
 
 import countTo from 'vue-count-to'
 export default {
@@ -163,7 +165,8 @@ export default {
     BasePie,
     BaseArea,
     BaseBar,
-    countTo
+    countTo,
+    PanelGroup
   },
   data() {
     return {

@@ -16,7 +16,7 @@
           <el-button style="width:100%" type="primary" @click="submitForm('ruleForm')">登录</el-button>
         </el-form-item>
         <el-alert
-        title="用户名: guest 密码:123 / 用户名:admin 密码:123"
+        title="用户名: admin 密码:123 / 用户名:test 密码:123"
         :closable="false"
         type="success">
       </el-alert>
