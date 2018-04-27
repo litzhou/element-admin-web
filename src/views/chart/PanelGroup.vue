@@ -1,9 +1,9 @@
 <template>
   <el-row class="panel-group" :gutter="40">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
       <div class='card-panel'>
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+        <div class="card-panel-icon-wrapper">
+           <i class="icon iconfont icon-group_fill v-icon" style="color:#409EFF"></i>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">New Visits</div>
@@ -11,10 +11,10 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" >
-        <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+        <div class="card-panel-icon-wrapper">
+          <i class="icon iconfont icon-message_fill v-icon" style="color:#67C23A"></i>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Messages</div>
@@ -22,10 +22,10 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel">
-        <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+        <div class="card-panel-icon-wrapper">
+          <i class="icon iconfont icon-redpacket_fill v-icon" style="color:#fbdb5a"></i>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Purchases</div>
@@ -33,10 +33,10 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-shoppingCard">
-          <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
+          <i class="icon iconfont icon-service_fill v-icon" style="color:#f2637b"></i>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Shoppings</div>
@@ -60,7 +60,6 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .panel-group {
-  margin-top: 10px;
   .card-panel-col{
     margin-bottom: 20px;
   }
@@ -74,41 +73,14 @@ export default {
     background: #fff;
     box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
     border-color: rgba(0, 0, 0, .05);
-    &:hover {
-      .card-panel-icon-wrapper {
-        color: #fff;
-      }
-      .icon-people {
-         background: #40c9c6;
-      }
-      .icon-message {
-        background: #36a3f7;
-      }
-      .icon-money {
-        background: #f4516c;
-      }
-      .icon-shoppingCard {
-        background: #34bfa3
-      }
-    }
-    .icon-people {
-      color: #40c9c6;
-    }
-    .icon-message {
-      color: #36a3f7;
-    }
-    .icon-money {
-      color: #f4516c;
-    }
-    .icon-shoppingCard {
-      color: #34bfa3
-    }
     .card-panel-icon-wrapper {
       float: left;
-      margin: 14px 0 0 14px;
-      padding: 16px;
       transition: all 0.38s ease-out;
       border-radius: 6px;
+      margin-left: 30px;
+      .v-icon{
+        font-size: 70px;
+      }
     }
     .card-panel-icon {
       float: left;
