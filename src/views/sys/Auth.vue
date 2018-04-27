@@ -8,7 +8,7 @@
       </el-breadcrumb>
     </div>
     <el-row :gutter="10">
-      <el-col :xs="6" :lg="6">
+      <el-col :xs="24" :sm="10" :lg="6">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
             <span>选择角色</span>
@@ -25,7 +25,7 @@
           </el-menu>
         </el-card>
       </el-col>
-      <el-col :xs="9" :lg="9">
+      <el-col :xs="24" :sm="14" :lg="9">
         <el-card class="no-shadow">
           <div slot="header" class="clearfix">
             <span>选择权限</span>
@@ -44,7 +44,7 @@
         </el-card>
       </el-col>
 
-      <el-col :xs="9" :lg="9">
+      <el-col :xs="24" :sm="24" :lg="9">
         <el-card class="no-shadow">
           <div slot="header" class="clearfix">
             <span>编辑权限</span>
@@ -141,7 +141,17 @@ export default {
       this.$refs.tree.setCheckedKeys(this.checkedKeys);
     },
     //保存权限
-    async handleSaveAuth(){
+    handleSaveAuth(){
+      this.$confirm('确定保存权限?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.doSaveAuth()
+        })
+    },
+    //保存权限
+    async doSaveAuth(){
       let chenckedIds = this.$refs.tree.getCheckedKeys();
       let res = await this.$api.AUTH_SAVE({roleId:this.roleId,authIds:chenckedIds})
     },
