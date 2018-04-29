@@ -102,12 +102,12 @@ export const asyncRouterMap = [
         name: 'Role',
         component: lazyLoading('views/sys/Role'),
         meta: {auth: 'role:list', title: '角色管理'}
-      }, /**{
+      }, {
         path: '/menu',
         name: 'Menu',
         component: lazyLoading('views/sys/Menu'),
-        meta: { title: '资源管理'}
-      },*/{
+        meta: {auth: 'menu:list', title: '菜单管理'}
+      },{
         path: '/auth',
         name: 'Auth',
         component: lazyLoading('views/sys/Auth'),

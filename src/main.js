@@ -34,6 +34,9 @@ import VueQuillEditor from 'vue-quill-editor'
 // 国际化
 import messages from '@/i18n/index'
 
+// ZkTable
+import ZkTable from 'vue-table-with-tree-grid'
+
 // require styles
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -46,6 +49,7 @@ import 'mavon-editor/dist/css/index.css'
 Vue.use(window['mavon-editor'])
 Vue.use(VueQuillEditor /* { default global options } */)
 Vue.use(VueI18n)
+Vue.component(ZkTable.name, ZkTable)
 
 Vue.use(Api)
 Vue.use(VueUI)

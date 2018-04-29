@@ -69,5 +69,11 @@ export default {
   //根据角色ID获取角色权限，得到的结果角色用有的菜单ID集合
   FIND_MENU_ID_BY_ROLE_ID : params => { return fetch({url: `/roleMenu/getMenuIdByRoleId`, method: 'get', params: params})},
   //分配权限
-  AUTH_SAVE : params => { return fetch({url: `/roleMenu/saveAuth`, method: 'post', params: params})}
+  AUTH_SAVE : params => { return fetch({url: `/roleMenu/saveAuth`, method: 'post', params: params})},
+  //查询菜单
+  MENU_LIST_ALL : params => { return fetch({url: `/menu/list/all`, method: 'get', data: params})},
+  //新增菜单
+  MENU_ADD : params => { return fetch({url: `/menu/add`, method: 'post', data: params})},
+  //删除菜单
+  MENU_DELETE : params => { return fetch({url: `/menu/delete`, method: 'delete', data: params})},
 }
