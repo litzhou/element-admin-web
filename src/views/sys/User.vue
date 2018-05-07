@@ -22,7 +22,15 @@
           </div>
         </el-popover>
         <el-button v-popover:popover5 type="danger" @click="batchDelVisible=true" v-show="multipleSelection.length>0">批量删除</el-button>
-        <el-input placeholder="输入关键词按回车" v-model="page.search"  suffix-icon="el-icon-search" clearable style="width:200px;"  @keyup.enter.native="handleSearch"></el-input>
+        <el-select v-model="page.userState" clearable="true" style="width:150px;" placeholder="请选择状态" @change="handleSearch">
+          <el-option
+            v-for="item in userStates"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-input placeholder="输入用户名" v-model="page.search"  suffix-icon="el-icon-search" clearable style="width:200px;"  @keyup.enter.native="handleSearch"></el-input>
       </div>
       <!-- 表格 -->
       <el-table :data="data" border stripe  @selection-change="handleSelectionChange" style="width: 100%">
@@ -37,7 +45,8 @@
         </el-table-column>
         <el-table-column sortable prop="userState" label="状态">
           <div slot-scope="scope">
-            <span>{{ scope.row.userState == 1 ? '启用' : '禁用' }}</span>
+            <el-tag v-if="scope.row.userState == 1" type="success">启用</el-tag>
+            <el-tag v-if="scope.row.userState == -1" type="danger">禁用</el-tag>
           </div>
         </el-table-column>
         <el-table-column sortable label="创建时间">
@@ -139,6 +148,10 @@ export default {
       depts: [], //部门
       roles: [], //角色
       formLabelWidth: '120px',
+      userStates:[
+        {label:"启用",value:1},
+        {label:"禁用",value:-1}
+      ],
       form: {
         id:'',
         userName: '',
@@ -159,6 +172,7 @@ export default {
       },
       //分页查询参数
       page: {
+        userState: '',
         search: '',
         size: 10,
         total: 0,

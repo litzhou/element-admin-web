@@ -22,6 +22,14 @@
           </div>
         </el-popover>
         <el-button v-popover:popover5 type="danger" @click="batchDelVisible=true" v-show="multipleSelection.length>0">批量删除</el-button>
+        <el-select v-model="page.roleState" clearable="true" style="width:150px;" placeholder="请选择状态" @change="handleSearch">
+          <el-option
+            v-for="item in roleStates"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
         <el-input placeholder="输入关键词按回车" v-model="page.search"  suffix-icon="el-icon-search" clearable style="width:200px;"  @keyup.enter.native="handleSearch"></el-input>
       </div>
       <!-- 表格 -->
@@ -34,7 +42,8 @@
         </el-table-column>
         <el-table-column sortable prop="roleState" label="状态">
           <div slot-scope="scope">
-            <span>{{ scope.row.roleState == 1 ? '启用' : '禁用' }}</span>
+            <el-tag v-if="scope.row.roleState == 1" type="success">启用</el-tag>
+            <el-tag v-if="scope.row.roleState == -1" type="danger">禁用</el-tag>
           </div>
         </el-table-column>
         <el-table-column sortable label="创建时间">
@@ -113,6 +122,10 @@ export default {
       title: '新增',
       batchDelVisible:false,
       formLabelWidth: '120px',
+      roleStates:[
+        {label:"启用",value:1},
+        {label:"禁用",value:-1}
+      ],
       form: {
         id:'',
         roleName: '',
@@ -128,6 +141,7 @@ export default {
       },
       //分页查询参数
       page: {
+        roleState:'',
         search: '',
         size: 10,
         total: 0,
