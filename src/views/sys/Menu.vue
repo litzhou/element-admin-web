@@ -31,7 +31,7 @@
         <template slot="opts" slot-scope="scope">
             <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-popover trigger="click" placement="top" width="160" style="display:inline-block" v-model="scope.row.visible">
-              <p>确定删除{{scope.row.name}}吗？</p>
+              <p>确定删除 {{scope.row.menuName}} 吗？</p>
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
                 <el-button type="primary" size="mini" @click="hanleSingleDelete(scope.row)">确定</el-button>
@@ -44,8 +44,21 @@
     <!-- 表单 -->
   <el-dialog :title="title" :visible.sync="dialogFormVisible" :append-to-body="true">
     <el-form :model="form" v-loading="loading" :rules="rules" ref="form">
+      <el-form-item label="上级菜单" :label-width="formLabelWidth" prop="pid">
+        <el-cascader
+          :options="data"
+          :props="cascaderProps"
+          v-model="form.pid"
+          :change-on-select="true"
+          style="width:100%"
+          placeholder="请选择上级菜单,默认不选为一级菜单"
+        ></el-cascader>
+      </el-form-item>
       <el-form-item label="菜单名称" :label-width="formLabelWidth" prop="menuName">
         <el-input v-model="form.menuName" auto-complete="off" placeholder="请输入菜单名称"></el-input>
+      </el-form-item>
+      <el-form-item label="菜单URL" :label-width="formLabelWidth" prop="url">
+        <el-input v-model="form.url" auto-complete="off" placeholder="请输入菜单URL"></el-input>
       </el-form-item>
       <el-form-item label="权限资源" :label-width="formLabelWidth">
         <el-input v-model="form.resource" auto-complete="off" placeholder="请输入菜单资源名称"></el-input>
@@ -53,8 +66,8 @@
       <el-form-item label="排序" :label-width="formLabelWidth">
         <el-input v-model="form.sort" auto-complete="off" type="number" placeholder="排序"></el-input>
       </el-form-item>
-      <el-form-item label="编码" :label-width="formLabelWidth">
-        <el-input v-model="form.code" auto-complete="off"  placeholder="编码"></el-input>
+      <el-form-item label="图标" :label-width="formLabelWidth">
+        <el-input v-model="form.icon" auto-complete="off"  placeholder="图标"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -67,9 +80,12 @@
 
 <script>
   export default {
-    name: 'example',
     data() {
       return {
+        cascaderProps:{
+          label: 'menuName',
+          value: 'id'
+        },
         props: {
           stripe: true,
           border: true,
@@ -90,12 +106,12 @@
         title: '新增',
         form:{
           id: '',
-          code: '',
           menuName: '',
-          pid: '',
+          pid: ['0'], 
+          icon: '',
+          url: '',
           resource: '',
-          sort:'',
-          deep:''
+          sort:''
         },
         rules:{
           menuName:[
@@ -110,10 +126,6 @@
             width: '300px'
           },
           {
-            label: '菜单编码',
-            prop: 'code'
-          },
-          {
             label: '菜单URL',
             prop: 'url'
           },
@@ -126,7 +138,7 @@
             prop: 'sort'
           },
           {
-            label: '深度',
+            label: '深度(只读)',
             prop: 'deep'
           },
           {
@@ -162,7 +174,7 @@
       //新增
       handleAdd() {
         this.title = '新增'
-        this.form = {roleState:1}
+        this.form = {roleState:1,pid: ['0']}
         this.dialogFormVisible = true
       },
       //提交表单
@@ -180,6 +192,13 @@
       async postData() {
         this.loading = true
         let res = ''
+        let pid = this.form.pid
+        if(pid){
+          pid = pid[pid.length-1]
+          this.form.pid = pid
+        }else{
+          this.form.pid = '0'
+        }
         if (this.title === '新增') {
           res = await this.$api.MENU_ADD(this.form)
         } else {
@@ -191,11 +210,13 @@
         }
         this.loading = false
       },
+      //编辑
       handleEdit(row) {
+        console.log(row)
         this.title = '编辑'
         this.dialogFormVisible = true
         this.form = row
-      // objectFly(this.form,row)
+        //this.form.pid = [row.pid]
       },
       handleSelectionChange(val) {
         this.multipleSelection = val
